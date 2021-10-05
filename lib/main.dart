@@ -18,8 +18,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         title: "My App",
         // home: MyHomePage(),
-        home: FoodMenuPage(),
-        // home: BillApp(),
+        // home: FoodMenuPage(),
+        home: BillApp(),
         theme: ThemeData(primarySwatch: Colors.purple));
   }
 }
