@@ -1,3 +1,5 @@
+// ignore_for_file: slash_for_doc_comments, prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'food_menu.dart';
 import 'money_box.dart';
@@ -7,9 +9,12 @@ main() {
   runApp(app);
 }
 
-// Created my own Widget (StateLess)
-// StateLess Widget do not deal with State
-// Things inside StateLess Widget CAN'T be changed during Run Time
+/**
+ * Created my own StateLess Widget (First Widget)
+ * StateLess Widget do not deal with State
+ * Things inside StateLess Widget (except Stateful Widget) 
+ * CAN'T be changed during Run Time
+ */
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
@@ -17,6 +22,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         title: "My App",
+
+        /**
+         * Select Output from these 3
+         */
         // home: MyHomePage(),
         // home: FoodMenuPage(),
         home: BillApp(),
@@ -24,9 +33,13 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// Create my own StateFul Widget
-// StateFull Widget deal with State
-// Compunents inside StateFul Widget CAN be changed during Run Time
+/**
+ * Create my own StateFul Widget
+ * StateFull Widget deal with State
+ * Compunents inside StateFul Widget CAN be changed during Run Time
+ * 
+ * P.S : Kinda messy, contains multiple things
+ */
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
 
@@ -38,19 +51,21 @@ class _MyHomePageState extends State<MyHomePage> {
   int number = 0; // Declaring State
   @override
   Widget build(BuildContext context) {
-    // Add Widgets to List
-    // List<Widget> data = [];
-    // data.add(Text("Press button to increase number"));
-    // data.add(Text(number.toString(), style: TextStyle(fontSize: 60)));
-    // data.add(Text("Flutter"));
+    /// Add Widgets to List
+    List<Widget> data = [];
+    data.add(Text("Press button to increase number"));
+    data.add(Text(number.toString(), style: TextStyle(fontSize: 60)));
+    data.add(Text("Flutter"));
 
-    // Control App Layout with Scaffold Widget (Template)
+    /// Control App Layout with Scaffold Widget (Template)
     return Scaffold(
       appBar: AppBar(
         title: const Text("Hello Demo Flutter"),
       ),
 
-      /* ListView.builder can be used, when dealt with LARGE quantity */
+      /*
+      ListView.builder can be used, when dealt with LARGE quantity 
+      */
       // body: ListView.builder(
       //     itemCount: 30,
       //     itemBuilder: (BuildContext context, int index) {
@@ -59,46 +74,67 @@ class _MyHomePageState extends State<MyHomePage> {
       //       );
       //     }),
 
-      // There can be only 1 Widget inside Center (only 1 inside child)
+      /*
+      There can be only 1 Widget inside Center (only 1 inside child)
+      */
       body: Center(
-        // Use List to holds multiple Widgets inside
-        child: ListView(children: getData(10)),
+        /*
+        Use List to holds multiple Widgets inside (Uncheck the above & below)
+        */
+        // child: ListView(children: getData(10)),
 
-        // Column Widget can hold MULTIPLE Widgets, in either horizontal or vertical
-        // child:
-        //     Column(mainAxisAlignment: MainAxisAlignment.center, children: data),
+        /*
+        Column Widget can hold MULTIPLE Widgets, in either horizontal or vertical
+        */
+        child:
+            Column(mainAxisAlignment: MainAxisAlignment.center, children: data),
 
-        // Print Image from Internet
+        /*
+        Print Image from Internet
+        */
         // child: Image(
         //   image: NetworkImage(
         //       "https://cdn.pixabay.com/photo/2020/07/21/16/24/landscape-5426755__340.jpg"),
         // ),
 
-        // Uncheck to print text
+        /*
+        Print simple easy Text
+        */
         // child: Text(
         //   "First time with Flutter",
         //   style: TextStyle(fontSize: 30, color: Colors.green),
         // ),
       ),
 
-      // Create Float Action Button
-      // floatingActionButton: FloatingActionButton(
-      //   // When Pressed calls the given function
-      //   onPressed: addNumber,
-      //   // Decorate Button Widget
-      //   child: Icon(Icons.add),
-      // ),
+      /*
+      Create Float Action Button
+      */
+      floatingActionButton: FloatingActionButton(
+        /*
+        When Pressed calls the given function
+        */
+        onPressed: addNumber,
+        /*
+        Decorate Button Widget with given Icons.something
+        */
+        child: Icon(Icons.add),
+      ),
     );
   }
 
+/**
+ * When Called, this function will look for variable (state)
+ * that need to be changed
+ */
   void addNumber() {
-    // When Called, this function will look for variable (state),
-    // that need to be changed
     setState(() {
       number++;
     });
   }
 
+/**
+ * Return List<Widget> equals to a given value in parameter
+ */
   List<Widget> getData(int count) {
     List<Widget> data = [];
     for (int i = 0; i < count; i++) {
@@ -126,7 +162,7 @@ class FoodMenuPage extends StatefulWidget {
 }
 
 class _FoodMenuPageState extends State<FoodMenuPage> {
-  // Create Menu list from FoodMenu class
+  /// Create A List of menu with FoodMenu class
   List<FoodMenu> menu = [
     FoodMenu("Egg benedict", "15.00", "assets/images/egg_benedict.jpg"),
     FoodMenu("Burger", "16.00", "assets/images/burger.jpg"),
@@ -152,7 +188,9 @@ class _FoodMenuPageState extends State<FoodMenuPage> {
               ),
               subtitle: Text("Price \$" + food.price),
 
-              // When clicked on menu in list
+              /*
+              When clicked on menu in list, print
+              */
               onTap: () {
                 print("You pick menu: " + food.name);
               },
@@ -197,7 +235,9 @@ class _BillAppState extends State<BillApp> {
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           ),
         ),
-        // Cover Column widget in Padding widget
+        /*
+        Cover Column widget in Padding widget (create empty space on Left&Right)
+        */
         body: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
