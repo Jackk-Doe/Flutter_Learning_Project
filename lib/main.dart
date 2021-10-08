@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'food_menu.dart';
 import 'money_box.dart';
+import 'exchange_rate.dart';
+import 'package:http/http.dart' as http;
 
 main() {
   var app = const MyApp();
@@ -28,7 +30,8 @@ class MyApp extends StatelessWidget {
          */
         // home: MyHomePage(),
         // home: FoodMenuPage(),
-        home: BillApp(),
+        // home: BillApp(),
+        home: CurrencyExchange(),
         theme: ThemeData(primarySwatch: Colors.purple));
   }
 }
@@ -167,7 +170,7 @@ class _FoodMenuPageState extends State<FoodMenuPage> {
     FoodMenu("Egg benedict", "15.00", "assets/images/egg_benedict.jpg"),
     FoodMenu("Burger", "16.00", "assets/images/burger.jpg"),
     FoodMenu("Pasta", "14.00", "assets/images/pasta.jpg"),
-    FoodMenu("Chowder", "9.99", "assets/images/chowder.jpg")
+    FoodMenu("Chowder", "9.00", "assets/images/chowder.jpg")
   ];
 
   @override
@@ -214,6 +217,8 @@ class _BillAppState extends State<BillApp> {
   /*
   The initState() will be called only once per build,
   when the widget builded sucessfully       (before build())
+
+  initState() is equavalent with constructor of Object
   */
   @override
   void initState() {
@@ -258,5 +263,62 @@ class _BillAppState extends State<BillApp> {
             ],
           ),
         ));
+  }
+}
+
+/*
+Create Currency Exchange (StateFull Widget)
+*/
+class CurrencyExchange extends StatefulWidget {
+  const CurrencyExchange({Key? key}) : super(key: key);
+
+  @override
+  _CurrencyExchangeState createState() => _CurrencyExchangeState();
+}
+
+class _CurrencyExchangeState extends State<CurrencyExchange> {
+  late ExchangeRate _dataFromAPI;
+
+  @override
+  void initState() {
+    super.initState();
+    getExchangeRate();
+  }
+
+  /*
+  Need to use Future<> when dealing with API,
+  or when need to get data from outer source
+  */
+  Future<void> getExchangeRate() async {
+    /// Passing URL
+    var url = Uri.parse('https://api.exchangerate-api.com/v4/latest/THB');
+
+    /*
+    Get data from the above url by http method
+    Process wait unil recieved data from url
+
+    The RETURNED data will be in Json Object
+    */
+    var response = await http.get(url);
+
+    /*
+    json => dart object
+    */
+    _dataFromAPI = exchangeRateFromJson(response.body);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          "My Currency Exchange Rate",
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+      ),
+      body: Column(
+        children: [],
+      ),
+    );
   }
 }
