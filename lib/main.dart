@@ -288,10 +288,12 @@ class _CurrencyExchangeState extends State<CurrencyExchange> {
   /*
   Need to use Future<> when dealing with API,
   or when need to get data from outer source
+
+  Return EchaangeRate Object that was converted from json file
   */
-  Future<void> getExchangeRate() async {
+  Future<ExchangeRate> getExchangeRate() async {
     /// Passing URL
-    var url = Uri.parse('https://api.exchangerate-api.com/v4/latest/THB');
+    var url = Uri.parse('https://api.exchangerate-api.com/v4/latest/NZD');
 
     /*
     Get data from the above url by http method
@@ -303,22 +305,65 @@ class _CurrencyExchangeState extends State<CurrencyExchange> {
 
     /*
     json => dart object
+
+    Then set state
     */
+
     _dataFromAPI = exchangeRateFromJson(response.body);
+    return _dataFromAPI;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "My Currency Exchange Rate",
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        appBar: AppBar(
+          title: Text(
+            "My Currency Exchange Rate",
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          ),
         ),
-      ),
-      body: Column(
-        children: [],
-      ),
-    );
+        /**
+         * FutureBuilder similar with ListView
+         * 
+         * pass Future method (json) to FutureBuilder, 
+         * then it will return converted data (dart object)
+         */
+        body: FutureBuilder(
+          /*
+          While waiting for the <code>future:<code> to finish running,
+          throw the <code>builder:<code> widget
+          */
+          future: getExchangeRate(),
+          /*
+          The returned data from the above future (getExchangeRate()) will be saved and,
+          stored in the below snapshot
+          */
+          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+            // If succesfully get all data from getExchangeRate()
+            if (snapshot.connectionState == ConnectionState.done) {
+              /// Save data in result variable
+              var result = snapshot.data;
+              return ListView(
+                children: [
+                  ListTile(
+                    title: Text("1 " + result.base),
+                  ),
+                  ListTile(
+                    title: Text("${result.date}"),
+                  ),
+                  ListTile(
+                    title: Text(result.rates["USD"].toString() + " USD"),
+                  ),
+                  ListTile(
+                    title: Text(result.rates["THB"].toString() + " THB"),
+                  )
+                ],
+              );
+            }
+
+            // If NOT yet done, return Linear progess indicator widget
+            return LinearProgressIndicator();
+          },
+        ));
   }
 }
