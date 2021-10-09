@@ -343,21 +343,26 @@ class _CurrencyExchangeState extends State<CurrencyExchange> {
             if (snapshot.connectionState == ConnectionState.done) {
               /// Save data in result variable
               var result = snapshot.data;
-              return ListView(
-                children: [
-                  ListTile(
-                    title: Text("1 " + result.base),
-                  ),
-                  ListTile(
-                    title: Text("${result.date}"),
-                  ),
-                  ListTile(
-                    title: Text(result.rates["USD"].toString() + " USD"),
-                  ),
-                  ListTile(
-                    title: Text(result.rates["THB"].toString() + " THB"),
-                  )
-                ],
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+
+                /// Used Column instead of ListView
+                child: Column(
+                  children: [
+                    /// Base Currency
+                    MoneyBox(
+                        "Currency " + result.base, 1, Colors.lightBlue, 150),
+
+                    /// Create some space between each box with SizeBox widget
+                    SizedBox(height: 5),
+                    MoneyBox("USD", result.rates["USD"], Colors.blue, 120),
+                    SizedBox(height: 5),
+                    MoneyBox("THB", result.rates["THB"], Colors.green, 120),
+                    SizedBox(height: 5),
+                    MoneyBox(
+                        "LAK", result.rates["LAK"], Colors.red.shade200, 120),
+                  ],
+                ),
               );
             }
 
