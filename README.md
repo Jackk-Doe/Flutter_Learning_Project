@@ -1,6 +1,6 @@
 # Flutter_Learning_Project
 
-A new Flutter project.
+Learning resource: https://www.youtube.com/watch?v=3jGj-1-m_zA
 
 ## Getting Started
 

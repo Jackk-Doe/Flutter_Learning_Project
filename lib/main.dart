@@ -343,6 +343,9 @@ class _CurrencyExchangeState extends State<CurrencyExchange> {
             if (snapshot.connectionState == ConnectionState.done) {
               /// Save data in result variable
               var result = snapshot.data;
+
+              /// Base currency amount
+              double amount = 100;
               return Padding(
                 padding: const EdgeInsets.all(8.0),
 
@@ -350,17 +353,22 @@ class _CurrencyExchangeState extends State<CurrencyExchange> {
                 child: Column(
                   children: [
                     /// Base Currency
-                    MoneyBox(
-                        "Currency " + result.base, 1, Colors.lightBlue, 150),
+                    MoneyBox("Currency " + result.base, amount,
+                        Colors.lightBlue, 130),
 
                     /// Create some space between each box with SizeBox widget
                     SizedBox(height: 5),
-                    MoneyBox("USD", result.rates["USD"], Colors.blue, 120),
-                    SizedBox(height: 5),
-                    MoneyBox("THB", result.rates["THB"], Colors.green, 120),
+                    MoneyBox(
+                        "USD", amount * result.rates["USD"], Colors.blue, 100),
                     SizedBox(height: 5),
                     MoneyBox(
-                        "LAK", result.rates["LAK"], Colors.red.shade200, 120),
+                        "THB", amount * result.rates["THB"], Colors.green, 100),
+                    SizedBox(height: 5),
+                    MoneyBox("LAK", amount * result.rates["LAK"],
+                        Colors.red.shade200, 100),
+                    SizedBox(height: 5),
+                    MoneyBox("JPY", amount * result.rates["JPY"], Colors.orange,
+                        100),
                   ],
                 ),
               );
